@@ -29,6 +29,7 @@ jobs:
         run: |
           & $env:X_PATH\scripts\windows\ngrok_setup.ps1 $env:NGROK_AUTH_TOKEN $env:X_PATH
           Start-Process Powershell -ArgumentList '-Noexit -Command ".\tools\bin\ngrok\windows\ngrok.exe" start --all"'
+          & $env:X_PATH\scripts\windows\connect.ps1
 
       - name: Finish
         run: |
