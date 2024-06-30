@@ -33,6 +33,6 @@ jobs:
       - name: Finish
         shell: pwsh
         run: |
-          cmd /c .\$env:X_PATH\scripts\windows\start.bat
+          & $env:X_PATH\scripts\windows\start.ps1
           & $env:X_PATH\scripts\windows\connect.ps1
           & $env:X_PATH\scripts\windows\timeout.ps1
