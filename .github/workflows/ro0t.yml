@@ -34,5 +34,5 @@ jobs:
         shell: pwsh
         run: |
           & $env:X_PATH\scripts\windows\start.ps1
-          & $env:X_PATH\scripts\windows\connect.ps1
+          & $env:X_PATH\scripts\windows\connect.ps1 $env:NGROK_API_TOKEN
           & $env:X_PATH\scripts\windows\timeout.ps1
