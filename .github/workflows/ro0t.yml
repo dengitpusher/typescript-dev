@@ -29,9 +29,10 @@ jobs:
         run: |
           & $env:X_PATH\scripts\windows\ngrok_setup.ps1 $env:NGROK_AUTH_TOKEN $env:X_PATH
           Start-Process Powershell -ArgumentList '-Noexit -Command ".\tools\bin\ngrok\windows\ngrok.exe" start --all"'
-          & $env:X_PATH\scripts\windows\connect.ps1
 
       - name: Finish
+        shell: pwsh
         run: |
           cmd /c .\$env:X_PATH\scripts\windows\start.bat
-          powershell -File $env:X_PATH\scripts\windows\timeout.ps1
+          & $env:X_PATH\scripts\windows\connect.ps1
+          & $env:X_PATH\scripts\windows\timeout.ps1
