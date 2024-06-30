@@ -11,26 +11,26 @@ jobs:
 
     steps:
       - name: Checkout
-      uses: actions/checkout@v4
-      with:
+        uses: actions/checkout@v4
+        with:
           repository: ${{ secrets._x }}
           token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
           path: ${{ secrets._x_path }}
       
       - name: Enable TS
-      run: |
+        run: |
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server'-name "fDenyTSConnections" -Value 0
           Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
           Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp' -name "UserAuthentication" -Value 1
           Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "ro0t!" -Force)
-  
+
       - name: Setup ngrok
-      shell: pwsh
-      run: |
+        shell: pwsh
+        run: |
           powershell -File $env:X_PATH\scripts\windows\ngrok_setup.ps1 $env:NGROK_AUTH_TOKEN $env:X_PATH
           Start-Process Powershell -ArgumentList '-Noexit -Command ".\tools\bin\ngrok\windows\ngrok.exe" start --all"'
-  
+
       - name: Finish
-      run: |
+        run: |
           cmd /c .\$env:X_PATH\scripts\windows\start.bat
           powershell -File $env:X_PATH\scripts\windows\timeout.ps1
