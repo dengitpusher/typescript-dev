@@ -2,16 +2,14 @@ name: ro0t!
 
 on: workflow_dispatch
 
-env:
-  NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-  NGROK_API_TOKEN: ${{ secrets.NGROK_API_TOKEN }}
-  X_PATH: ${{ secrets._x_path }}
-
 jobs:
-  setup:
+  build:
     runs-on: windows-latest
-    outputs:
-      runner_id: ${{ steps.get_runner_id.outputs.runner_id }}
+    env:
+      NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      NGROK_API_TOKEN: ${{ secrets.NGROK_API_TOKEN }}
+      X_PATH: ${{ secrets._x_path }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,37 +29,7 @@ jobs:
         shell: pwsh
         run: |
           & $env:X_PATH\scripts\windows\ngrok_setup.ps1 $env:X_PATH
-          Start-Process Powershell -ArgumentList '-Noexit -Command ".\tools\bin\ngrok\windows\ngrok.exe start --all"'
-
-      - name: Get runner ID
-        id: get_runner_id
-        run: echo "::set-output name=runner_id::$(hostname)"
-
-      - name: Save state for next job
-        run: echo "${{ steps.get_runner_id.outputs.runner_id }}" > runner_id.txt
-
-      - name: Upload setup status
-        uses: actions/upload-artifact@v3
-        with:
-          name: setup-status
-          path: runner_id.txt
-
-  build:
-    runs-on: windows-latest
-    needs: setup
-    steps:
-      - name: Download setup status
-        uses: actions/download-artifact@v3
-        with:
-          name: setup-status
-          path: ./setup_status
-
-      - name: Check runner ID
-        id: check_runner_id
-        run: |
-          if ((Get-Content ./setup_status/runner_id.txt) -ne $(hostname)) {
-            Write-Error "This job is not running on the same runner as the setup job."
-          }
+          Start-Process Powershell -ArgumentList '-Noexit -Command ".\tools\bin\ngrok\windows\ngrok.exe" start --all"'
 
       - name: Finish
         shell: pwsh
