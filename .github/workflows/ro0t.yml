@@ -2,14 +2,14 @@ name: ro0t!
 
 on: workflow_dispatch
 
-runs-on: windows-latest
 env:
   NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
   NGROK_API_TOKEN: ${{ secrets.NGROK_API_TOKEN }}
   X_PATH: ${{ secrets._x_path }}
-  
+
 jobs:
   setup:
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,8 +29,11 @@ jobs:
         shell: pwsh
         run: |
           & $env:X_PATH\scripts\windows\ngrok_setup.ps1 $env:X_PATH
-          Start-Process Powershell -ArgumentList '-Noexit -Command ".\tools\bin\ngrok\windows\ngrok.exe" start --all"'
+          Start-Process Powershell -ArgumentList '-Noexit -Command ".\tools\bin\ngrok\windows\ngrok.exe start --all"'
+
   build:
+    runs-on: windows-latest
+    needs: setup
     steps:
       - name: Finish
         shell: pwsh
