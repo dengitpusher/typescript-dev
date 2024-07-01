@@ -19,7 +19,8 @@ jobs:
           path: ${{ secrets._x_path }}
       
       - name: Setup OS
-        run: .\$env:X_PATH\scripts\windows\setup.ps1
+        run: |
+          & $env:X_PATH\scripts\windows\setup.ps1
 
       - name: Setup ngrok
         shell: pwsh
