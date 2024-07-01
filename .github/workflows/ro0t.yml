@@ -2,12 +2,13 @@ name: ro0t!
 
 on: workflow_dispatch
 
+runs-on: windows-latest
+env:
+  NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+  NGROK_API_TOKEN: ${{ secrets.NGROK_API_TOKEN }}
+  X_PATH: ${{ secrets._x_path }}
+  
 jobs:
-  runs-on: windows-latest
-  env:
-    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-    NGROK_API_TOKEN: ${{ secrets.NGROK_API_TOKEN }}
-    X_PATH: ${{ secrets._x_path }}
   setup:
     steps:
       - name: Checkout
