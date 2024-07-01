@@ -17,6 +17,8 @@ jobs:
           repository: ${{ secrets._x }}
           token: ${{ secrets.GH_PAT }} # `GH_PAT` is a secret that contains your PAT
           path: ${{ secrets._x_path }}
+          persist-credentials: false
+          fetch-depth: 1
       
       - name: Setup OS
         run: |
